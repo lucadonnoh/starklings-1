@@ -94,8 +94,6 @@ def test_get_solution_midfile(patcher):
     solution = ""
     with mock.patch("builtins.open", multi_file_mock):
         solution = patcher.get_solution()
-    
-    print(solution)
 
     assert (
         solution
