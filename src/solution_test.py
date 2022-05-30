@@ -80,3 +80,39 @@ func test_ok():
 end
 """
     )
+
+
+def test_get_solution_midfile(patcher):
+
+    contents = [
+        b"diff --git a/exercises/syntax/syntax02.cairo b/exercises/syntax/syntax02.cairo\nindex e210f76..a65e2a6 100644\n--- a/exercises/syntax/syntax02.cairo\n+++ b/exercises/syntax/syntax02.cairo\n@@ -8,0 +9 @@\n+from starkware.cairo.common.cairo_builtins import HashBuiltin\n",
+        b"%lang starknet\n\n# Starknet provides a module management system.\n# It is very similar to the Python's one.\n\n# I AM NOT DONE\n\n# TODO: add the module imports needed to make the test pass!\n\n# You can ignore what follows for now\n@external\nfunc test_ok{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}():\n    return ()\nend\n",
+    ]
+
+    multi_file_mock = multi_mock_open(*contents)
+
+    solution = ""
+    with mock.patch("builtins.open", multi_file_mock):
+        solution = patcher.get_solution()
+    
+    print(solution)
+
+    assert (
+        solution
+        == """%lang starknet
+
+# Starknet provides a module management system.
+# It is very similar to the Python's one.
+
+# I AM NOT DONE
+
+# TODO: add the module imports needed to make the test pass!
+from starkware.cairo.common.cairo_builtins import HashBuiltin
+
+# You can ignore what follows for now
+@external
+func test_ok{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}():
+    return ()
+end
+"""
+    )
