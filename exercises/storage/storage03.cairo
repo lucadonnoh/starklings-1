@@ -10,16 +10,22 @@ end
 
 @external
 func toggle{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}():
-    # TODO
-    # Implement toggle external
+    let (b) = bool.read()
+
+    if b == 0:
+        bool.write(1)
+    else:
+        bool.write(0)
+    end
+
+    return ()
 end
 
 @view
 func view_bool{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}() -> (
     bool : felt
 ):
-    # TODO
-    # Implement view_bool
+    return bool.read()
 end
 
 # TESTS #
